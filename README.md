@@ -1,4 +1,6 @@
 callSip.sh
 ==========
 
-call a sip phone via batch script
+call a voip phone 
+this simple batch script uses sip, to let a voip phone ring
+
