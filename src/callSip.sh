@@ -1,12 +1,12 @@
 #!/bin/sh
-#$Id$
-#call sip clients via commandline. this script can ring a distant phone.
-#there is no audio support until now.
+#$Id: callSip.sh 424 2014-03-02 11:03:29Z gaul1 $
+#2014 initial version - by lifesim.de
+#2017 server parsed from sip-adress - by lifesim.de
 
-viaserver=192.168.100.1
+viaserver=""  #fritz.box
 port=5060
 caller=555@caller
-callId=c$(date +%s)	#@t8100
+callId=c$(date +%s)	
 localIp=na
 duration=5	#sek.
 cseq=1
@@ -16,21 +16,27 @@ verbose=0
 
 
 show_help(){
-  echo SIP Phone caller. V0.8u$Rev$ by lifesim.de $crlf
+  echo SIP Phone caller. V1.0u$Rev: 424 $ by lifesim.de $crlf
   echo "usage:$crlf $0 [-v N|-p Port|-d Sec.|-s Via-server] sip-user-address"$crlf
-  echo "option (default) , desc."
-  echo " -c (555@caller)   , caller sip-address or phone number"
-  echo " -d (5)          , duration(sec.)"
-  echo " -l (na)         , own ip or URI"
-  echo " -p (5060)       , port"
-  echo " -s (),          , via-server ip or URI"
-  echo " -u (),          , use UDP"
-  echo " -v (0)          , verboselevel 0..4"
+  echo "option (default)    , desc."
+  echo " -c (555@caller)    , caller sip-address or phone number"
+  echo " -d (5)             , duration(sec.)"
+  echo " -l (na)            , own ip or URI"
+  echo " -p (5060)          , port"
+  echo " -s (from address)  , via-server ip or URI"
+  echo " -u (),             , use UDP instead of TCP"
+  echo " -v (0)             , verboselevel 0..4"
   echo 
   echo "examples:$crlf $0 -d3 alice@home.net"
   echo "   #starts a sip call to alice and hangs up after 3 sec."
   echo $crlf $0 -c+4930555@x alice@home.net"
   echo "   #starts a sip call to alice with callerid 004930555."
+}
+
+getServer(){  #param = full sip adress
+  sa=$1
+  s=$(echo $sa |cut -d@ -f 2)
+  echo $s
 }
 
 tcpTx(){
@@ -96,7 +102,11 @@ do
 done
 
 if [ $verbose -gt 0 ] ; then
-  echo SIP Phone caller. V0.1-$Rev$
+  echo SIP Phone caller. V0.1-$Rev: 424 $
+fi
+
+if [ -z $viaserver  ] ;then
+  viaserver=$(getServer $receiver)
 fi
 
 if [ $verbose -gt 3 ] ; then
