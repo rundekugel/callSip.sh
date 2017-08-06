@@ -1,11 +1,25 @@
 #!/bin/sh
 #$Id: callSip.sh 424 2014-03-02 11:03:29Z gaul1 $
 #2014 initial version - by lifesim.de
-#2017 server parsed from sip-adress - by lifesim.de
+#2017 server address  parsed from sip-adress - by lifesim.de
+#
+#   Copyright 2017 rundekugel@github.com / gaul1@lifesim.de
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
 
-viaserver=""  #fritz.box
+viaserver="" 
 port=5060
-caller=555@caller
+caller=555@nowhere
 callId=c$(date +%s)	
 localIp=na
 duration=5	#sek.
@@ -16,10 +30,10 @@ verbose=0
 
 
 show_help(){
-  echo SIP Phone caller. V1.0u$Rev: 424 $ by lifesim.de $crlf
+  echo SIP Phone caller. V1.0v$Rev: 425 $ by lifesim.de $crlf
   echo "usage:$crlf $0 [-v N|-p Port|-d Sec.|-s Via-server] sip-user-address"$crlf
   echo "option (default)    , desc."
-  echo " -c (555@caller)    , caller sip-address or phone number"
+  echo " -c (555@nowhere)   , caller sip-address or phone number"
   echo " -d (5)             , duration(sec.)"
   echo " -l (na)            , own ip or URI"
   echo " -p (5060)          , port"
@@ -29,7 +43,7 @@ show_help(){
   echo 
   echo "examples:$crlf $0 -d3 alice@home.net"
   echo "   #starts a sip call to alice and hangs up after 3 sec."
-  echo $crlf $0 -c+4930555@x alice@home.net"
+  echo " $crlf $0 -c+4930555@x alice@home.net"
   echo "   #starts a sip call to alice with callerid 004930555."
 }
 
@@ -149,3 +163,6 @@ sleep .3
 if [ $verbose -gt 0 ] ; then
   echo done.
 fi
+
+#eof
+
