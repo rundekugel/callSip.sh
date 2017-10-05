@@ -87,12 +87,14 @@ if [ -z "$*" ] ; then
   exit 1
 fi
 
-while getopts "h?uc:d:s:v:l: $*" opt; do
+while getopts "h?uc:d:s:v:p:l: $*" opt; do
     #echo "$opt = $OPTARG"
     case "$opt" in
     h|\?)
         show_help
         exit 0
+        ;;
+    p)  port="$OPTARG"
         ;;
     c)  caller="$OPTARG"
         ;;
